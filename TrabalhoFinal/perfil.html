@@ -9,20 +9,17 @@
   <link rel="shortcut icon" href="icones/LogoInstinct.png" type="image/x-icon">
 </head>
 <body>
-  <nav class="dashboard-nav">
-    <div class="nav-brand">
-      <img src="icones/LogoComTexto.png" alt="InstinctBank" class="bank-logo" style="filter: none; height: 65px; width: auto;">
-    </div>
-    <div class="nav-user">
-      <button onclick="window.location.href='painel.html'" class="btn-secondary">
-        <i class="fas fa-home"></i> Início
+  
+  <header class="logo-header" style="text-align: center;
+      padding: 10px;">
+    <a href="painel.html"><img src="icones/LogoComTexto.png" alt="InstinctBank Logo" style="height: 40px;"></a>
+    <a href="painel.html" style="text-decoration: none; color: white;">
+      <h2 style="font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif; font-size: x-large; position: absolute;left: 65px; top: 20px;">InstinctBank</h2>
+    </a>
+    <button onclick="logout()" style="cursor: pointer; padding: 5px; width: 60px; border-radius: 10px; border: 0; font-size: 18px; font-weight: 700; color: white; background-color: #2e7d32;">
+         Sair
       </button>
-      <button onclick="logout()" class="btn-logout">
-        <i class="fas fa-sign-out-alt"></i> Sair
-      </button>
-    </div>
-  </nav>
-
+  </header>
   <main style="display:flex;justify-content:center;align-items:start;flex:1;padding:2rem;">
     <section class="card" style="max-width:720px;width:100%;">
       <h2>Meu Perfil</h2>
