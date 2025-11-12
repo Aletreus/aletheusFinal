@@ -321,6 +321,7 @@
     
     const usuarios = window.db.getUsuarios();
     const usuario = usuarios[usuarioAtual];
+    if (!usuarios) location.href = 'index.html';
 
     function getSaudacao() {
       const hora = new Date().getHours();
@@ -342,9 +343,6 @@
       const [_, dia, mes, ano, hora, minuto] = partes;
       return new Date(ano, mes - 1, dia, hora, minuto);
     }
-
-    document.getElementById('userGreeting').textContent =
-      `${getSaudacao()}, ${usuario.perfil?.nome?.split(' ')[0] || usuarioAtual}`;
     document.getElementById('saldo').textContent = formatarMoeda(usuario.saldo || 0);
 
     // === FILTRO DE TRANSAÇÕES ===
