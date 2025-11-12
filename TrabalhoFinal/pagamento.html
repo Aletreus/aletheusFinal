@@ -4,52 +4,229 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>InstinctBank — Pagamentos</title>
-  <link rel="stylesheet" href="style.css" />
   <link rel="shortcut icon" href="icones/LogoInstinct.png" type="image/x-icon">
-  <script src="data.js"></script>
   <style>
-    .logo-header img {
-      max-height: 60px;
+    body {
+      font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+      background-color: #F8FFF8;
+      padding: 1rem;
+    }
+    .card {
+      background: #fff;
+      border-radius: 10px;
+      padding: 1.5rem;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      max-width: 550px;
+      margin: auto;
+    }
+    input, button {
+      display: block;
+      margin: .5rem 0;
+      padding: .5rem;
+      width: 100%;
+      box-sizing: border-box;
+    }
+    table {
+      width: 100%;
+      margin-top: 1rem;
+      border-collapse: collapse;
+    }
+    th, td {
+      border-bottom: 1px solid #ddd;
+      padding: .5rem;
+      text-align: center;
+    }
+    th {
+      background: #eee;
+    }
+    .pago { color: gray; text-decoration: line-through; }
+    .saldo {
+      background: #E8F5E9;
+      border-radius: 8px;
+      padding: .5rem;
+      text-align: center;
+      margin-bottom: 1rem;
+    }
+    .atrasado {
+      color: red;
+      font-weight: bold;
     }
   </style>
 </head>
 <body>
- <header class="logo-header" style="text-align: center;
-      padding: 10px;">
-    <a href="painel.html"><img src="icones/LogoComTexto.png" alt="InstinctBank Logo" style="height: 40px;"></a>
-    <a href="painel.html" style="text-decoration: none; color: white;">
-      <h2 style="font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif; font-size: x-large; position: absolute;left: 65px; top: 20px;">InstinctBank</h2>
-    </a>
+  <header style="text-align:center;">
+    <a href="painel.html"><img src="icones/LogoComTexto.png" style="height:40px"></a>
+    <h2>InstinctBank — Pagamentos</h2>
   </header>
-  <main style="padding:2rem;display:flex;justify-content:center;">
-    <section class="card" style="max-width:520px;">
-      <h2>Pagamentos</h2>
+
+  <main>
+    <section class="card">
+      <div class="saldo">
+        <strong>Saldo atual:</strong> R$ <span id="saldoAtual">0,00</span>
+      </div>
+
+      <h3>Pagar Boleto</h3>
       <input id="codigo" placeholder="Código do boleto" />
-      <input id="valor" type="number" placeholder="Valor em R$" />
-      <button id="pagar">Pagar</button>
-      <p id="msg" style="color:green;margin-top:.5rem"></p>
-      <p style="margin-top:.5rem"><button onclick="location.href='painel.html'">Voltar</button></p>
+      <button id="btnPagar">Pagar</button>
+      <p id="msg"></p>
+
+      <h3>Boletos em Aberto</h3>
+      <table id="listaBoletos">
+        <thead>
+          <tr><th>Código</th><th>Valor</th><th>Vencimento</th><th>Status</th></tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+
+      <button onclick="location.href='boletos.html'">Gerar Boletos</button>
+      <button onclick="location.href='painel.html'">Voltar ao Painel</button>
     </section>
   </main>
 
+  <footer style="text-align:center;margin-top:2rem;">
+    <p>© 2025 InstinctBank</p>
+  </footer>
+
+  <script src="data.js"></script>
   <script>
-    const atual = window.db.getUsuarioAtual();
-    if (!atual) location.href='index.html';
-    document.getElementById('pagar').addEventListener('click', function(){
-      const cod = document.getElementById('codigo').value.trim();
-      const valor = parseFloat(document.getElementById('valor').value);
-      const usuarios = window.db.getUsuarios();
-      const msg = document.getElementById('msg');
-      msg.style.color='red';
-      if (!cod) { msg.textContent='Código inválido'; return; }
-      if (!(valor>0) || valor > usuarios[atual].saldo) { msg.textContent='Valor inválido ou saldo insuficiente'; return; }
-      usuarios[atual].saldo -= valor;
-      usuarios[atual].historico.unshift(`${new Date().toLocaleString()} — Pagamento boleto ${cod} R$ ${valor.toFixed(2)}`);
-      window.db.saveUsuarios(usuarios);
-      msg.style.color='green';
-      msg.textContent='Pagamento efetuado';
-      document.getElementById('codigo').value=''; document.getElementById('valor').value='';
-    });
+    const tabela = document.querySelector('#listaBoletos tbody');
+    const msg = document.getElementById('msg');
+    const saldoSpan = document.getElementById('saldoAtual');
+    const JUROS_MENSAL = 0.03; // 3% ao mês de atraso
+
+    function carregarBoletos() {
+      return JSON.parse(localStorage.getItem('boletos') || '[]');
+    }
+
+    function salvarBoletos(lista) {
+      localStorage.setItem('boletos', JSON.stringify(lista));
+    }
+
+    function exibirSaldo() {
+      const usuarioAtual = db.getUsuarioAtual();
+      const usuarios = db.getUsuarios();
+      if (!usuarioAtual || !usuarios[usuarioAtual]) {
+        saldoSpan.textContent = "0,00";
+        return;
+      }
+      const saldo = usuarios[usuarioAtual].saldo || 0;
+      saldoSpan.textContent = saldo.toLocaleString('pt-BR', { minimumFractionDigits: 2 });
+    }
+
+    // 🧮 Função para calcular meses de atraso entre duas datas
+    function mesesDeAtraso(vencimento) {
+      const hoje = new Date();
+      const v = new Date(vencimento.split('/').reverse().join('-'));
+      if (hoje <= v) return 0;
+      const anos = hoje.getFullYear() - v.getFullYear();
+      const meses = hoje.getMonth() - v.getMonth();
+      const total = anos * 12 + meses;
+      return total > 0 ? total : 0;
+    }
+
+    function aplicarJurosBoletos() {
+      let boletos = carregarBoletos();
+      let alterou = false;
+
+      boletos.forEach(b => {
+        if (!b.pago) {
+          const atraso = mesesDeAtraso(b.vencimento);
+          if (atraso > 0 && !b.jurosAplicado) b.jurosAplicado = 0;
+
+          if (atraso > b.jurosAplicado) {
+            const vezes = atraso - b.jurosAplicado;
+            for (let i = 0; i < vezes; i++) {
+              b.valor *= (1 + JUROS_MENSAL);
+            }
+            b.jurosAplicado = atraso;
+            alterou = true;
+          }
+        }
+      });
+
+      if (alterou) salvarBoletos(boletos);
+    }
+
+    function exibirBoletos() {
+      aplicarJurosBoletos(); // Aplica juros sempre que carregar
+      const boletos = carregarBoletos();
+      tabela.innerHTML = '';
+      boletos.forEach(b => {
+        const tr = document.createElement('tr');
+        const atraso = mesesDeAtraso(b.vencimento);
+        const vencido = atraso > 0 && !b.pago;
+
+        tr.innerHTML = `
+          <td>${b.codigo}</td>
+          <td>${b.valor.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</td>
+          <td>${b.vencimento}</td>
+          <td class="${b.pago ? 'pago' : vencido ? 'atrasado' : ''}">
+            ${b.pago ? 'Pago' : vencido ? 'Atrasado (' + atraso + ' mês' + (atraso>1?'es':'') + ')' : 'Em aberto'}
+          </td>
+        `;
+        tabela.appendChild(tr);
+      });
+    }
+
+    function pagarBoleto() {
+      const codigo = document.getElementById('codigo').value.trim();
+      if (!codigo) {
+        msg.style.color = 'red';
+        msg.textContent = 'Digite o código do boleto.';
+        return;
+      }
+
+      const usuarioAtual = db.getUsuarioAtual();
+      const usuarios = db.getUsuarios();
+
+      if (!usuarioAtual || !usuarios[usuarioAtual]) {
+        msg.style.color = 'red';
+        msg.textContent = 'Usuário não autenticado.';
+        return;
+      }
+
+      let boletos = carregarBoletos();
+      const boleto = boletos.find(b => b.codigo === codigo);
+
+      if (!boleto) {
+        msg.style.color = 'red';
+        msg.textContent = 'Boleto não encontrado.';
+        return;
+      }
+      if (boleto.pago) {
+        msg.style.color = 'red';
+        msg.textContent = 'Este boleto já foi pago.';
+        return;
+      }
+
+      const saldoAtual = usuarios[usuarioAtual].saldo;
+
+      if (saldoAtual < boleto.valor) {
+        msg.style.color = 'red';
+        msg.textContent = 'Saldo insuficiente para pagar este boleto.';
+        return;
+      }
+
+      // Debitar valor e marcar como pago
+      usuarios[usuarioAtual].saldo -= boleto.valor;
+      boleto.pago = true;
+      boleto.dataPagamento = new Date().toLocaleDateString('pt-BR');
+
+      // Salvar tudo
+      salvarBoletos(boletos);
+      db.saveUsuarios(usuarios);
+
+      msg.style.color = 'green';
+      msg.textContent = `✅ Boleto ${codigo} pago com sucesso! Valor pago: R$ ${boleto.valor.toFixed(2)}`;
+      document.getElementById('codigo').value = '';
+
+      exibirBoletos();
+      exibirSaldo();
+    }
+
+    document.getElementById('btnPagar').addEventListener('click', pagarBoleto);
+    exibirBoletos();
+    exibirSaldo();
   </script>
 </body>
 </html>
