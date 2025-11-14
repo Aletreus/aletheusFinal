@@ -1,4 +1,4 @@
-// Dados simulados de usuários
+
 const usuarios = {
   "admin": { senha: "1234", saldo: 500, historico: [], cartoes: [], emprestimos: [] },
   "maria": { senha: "senha", saldo: 300, historico: [], cartoes: [], emprestimos: [] }
@@ -6,7 +6,6 @@ const usuarios = {
 
 let usuarioAtual = null;
 
-// Elementos do DOM
 const loginSection = document.getElementById("loginSection");
 const dashboard = document.getElementById("dashboard");
 const userDisplay = document.getElementById("userDisplay");
@@ -18,7 +17,6 @@ document.getElementById("btnDepositar").addEventListener("click", depositar);
 document.getElementById("btnSacar").addEventListener("click", sacar);
 document.getElementById("logoutBtn").addEventListener("click", logout);
 
-// Novas ações
 document.getElementById("btnPix").addEventListener("click", pix);
 document.getElementById("btnGerarCartao").addEventListener("click", gerarCartaoVirtual);
 document.getElementById("btnExtrato").addEventListener("click", mostrarExtrato);
@@ -48,7 +46,7 @@ function mostrarDashboard() {
   userDisplay.textContent = usuarioAtual;
   atualizarSaldo();
   renderHistorico();
-  renderCartaoVirtual(); // mostra cartão se já existir
+  renderCartaoVirtual(); 
 }
 
 function atualizarSaldo() {
@@ -99,7 +97,6 @@ function pix() {
   usuarios[destinatario].saldo += valor;
 
   adicionarHistorico(`PIX enviado R$ ${valor.toFixed(2)} para ${destinatario}`);
-  // adiciona historico no destinatário (visível quando ele logar)
   usuarios[destinatario].historico.unshift(`PIX recebido R$ ${valor.toFixed(2)} de ${usuarioAtual}`);
 
   atualizarSaldo();
@@ -127,7 +124,6 @@ function renderCartaoVirtual() {
   const lista = usuarios[usuarioAtual].cartoes;
   if (lista && lista.length) {
     const last = lista[lista.length - 1];
-    // mostra mascarado
     const masked = last.numero.split(' ').map((g, i) => i < 1 ? g : '****').join(' ');
     display.textContent = `Cartão: ${masked} • Val: ${last.validade} • CVV: ${last.cvv}`;
   } else {
@@ -136,7 +132,6 @@ function renderCartaoVirtual() {
 }
 
 function adicionarHistorico(texto) {
-  // adiciona ao array do usuário e atualiza DOM
   usuarios[usuarioAtual].historico.unshift(`${new Date().toLocaleString()} — ${texto}`);
   const li = document.createElement("li");
   li.textContent = usuarios[usuarioAtual].historico[0];
@@ -159,7 +154,6 @@ function mostrarExtrato() {
     alert("Nenhuma transação para exibir.");
     return;
   }
-  // abre uma janela simples com o extrato
   const win = window.open("", "_blank", "width=600,height=400");
   const html = `
     <html><head><title>Extrato - ${usuarioAtual}</title></head>

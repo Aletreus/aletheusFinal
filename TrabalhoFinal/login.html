@@ -8,6 +8,16 @@
   <link rel="shortcut icon" href="icones/LogoInstinct.png" type="image/x-icon">
   <script src="data.js"></script>
   <style>
+    a{
+      text-decoration: none;
+    }
+    button{
+      cursor: pointer;
+      padding: 5px 10px;
+      border-radius: 6px;
+      border: none;
+      font-size: 1rem;
+    }
     .logo-header {
       text-align: center;
       padding: 1rem;
@@ -32,7 +42,7 @@
       <input id="senha" type="password" placeholder="Senha" />
       <button id="btnAcessar">Acessar Conta</button>
       <p id="msg" style="color:red;margin-top:.5rem"></p>
-      <p style="margin-top:.5rem"><button onclick="location.href='index.html'">Voltar</button></p>
+      <a href="index.html"><button>Voltar</button></a>
     </section>
   </main>
 

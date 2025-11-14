@@ -9,111 +9,17 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
   <link rel="shortcut icon" href="icones/LogoInstinct.png" type="image/x-icon">
 </head>
-<body class="dashboard-body">
-  <nav class="dashboard-nav">
-    <div class="nav-brand">
-      <a href="painel.html"><img src="icones/LogoComTexto.png" alt="InstinctBank" class="bank-logo" style="filter: none; height: 40px; width: auto; cursor: pointer;"></a>
-      <a href="painel.html" style="text-decoration: none; color: white;">
-        <h2 style="font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif; font-size: x-large;">InstinctBank</h2>
-      </a>
-    </div>
-    <div class="nav-user">
-      <span id="userGreeting"></span>
-      <button onclick="sair()" class="btn-logout"><i class="fas fa-sign-out-alt"></i> Sair</button>
-    </div>
-  </nav>
-
-  <main class="dashboard-main">
-    <div class="dashboard-grid">
-      <!-- Cartão de Saldo -->
-      <section class="dashboard-card balance-card">
-        <div class="card-header">
-          <h3><i class="fas fa-wallet"></i> Saldo Disponível</h3>
-        </div>
-        <div class="card-body">
-          <div class="balance-amount">
-            <span class="currency">R$</span>
-            <span class="amount" id="saldo">0.00</span>
-          </div>
-          <button onclick="location.href='extrato.html'" class="btn-secondary">
-            <i class="fas fa-list"></i> Ver Extrato
-          </button>
-        </div>
-      </section>
-
-      <!-- Ações Rápidas -->
-      <section class="dashboard-card quick-actions" style="overflow-y: auto;">
-        <div class="card-header">
-          <h3><i class="fas fa-bolt"></i> Ações Rápidas</h3>
-        </div>
-        <div class="card-body">
-          <div class="actions-grid">
-            <button onclick="location.href='transferencia.html'" class="action-button">
-              <i class="fas fa-exchange-alt"></i>
-              <span>Transferir</span>
-            </button>
-            <button onclick="location.href='pagamento.html'" class="action-button">
-              <i class="fas fa-barcode"></i>
-              <span>Pagar</span>
-            </button>
-            <button onclick="location.href='deposito.html'" class="action-button">
-              <i class="fas fa-money-bill-wave"></i>
-              <span>Depositar</span>
-            </button>
-            <button onclick="location.href='cartoes.html'" class="action-button">
-              <i class="fas fa-credit-card"></i>
-              <span>Cartões</span>
-            </button>
-            <button onclick="location.href='emprestimo.html'" class="action-button">
-              <i class="fas fa-hand-holding-usd"></i>
-              <span>Empréstimo</span>
-            </button>
-             <button onclick="location.href='GerarBoletos.html'" class="action-button">
-              <i class="fas fa-barcode"></i>
-              <span>Gerar Boletos</span>
-            </button>
-          </div>
-        </div>
-      </section>
-
-      <!-- Cartão do Perfil -->
-      <section class="dashboard-card profile-card">
-        <div class="card-header">
-          <h3><i class="fas fa-user-circle"></i> Meu Perfil</h3>
-        </div>
-        <div class="card-body">
-          <div class="profile-info">
-            <div class="profile-avatar">
-              <i class="fas fa-user"></i>
-            </div>
-            <div class="profile-details">
-              <h4 id="userName"></h4>
-              <button onclick="location.href='perfil.html'" class="btn-primary">
-                <i class="fas fa-cog"></i> Gerenciar Perfil
-              </button>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- Últimas Transações -->
-      <section class="dashboard-card transactions-card" style="overflow-y: auto;">
-        <div class="card-header">
-          <h3><i class="fas fa-history"></i> Últimas Transações</h3>
-        </div>
-        <div class="card-body">
-          <div id="ultimasTransacoes" class="transactions-list">
-            <!-- Preenchido via JavaScript -->
-          </div>
-          <button onclick="location.href='extrato.html'" class="btn-text">
-            Ver todas as transações <i class="fas fa-chevron-right"></i>
-          </button>
-        </div>
-      </section>
-    </div>
-  </main>
-
-  <style>
+<style>
+  a{
+      text-decoration: none;
+    }
+  button{
+    cursor: pointer;
+    padding: 5px 10px;
+    border-radius: 6px;
+    border: none;
+    font-size: 1rem;
+  }
     .dashboard-body {
       margin: 0;
       padding: 0;
@@ -412,6 +318,110 @@
     }
   </style>
 
+<body class="dashboard-body">
+  <nav class="dashboard-nav">
+    <div class="nav-brand">
+      <a href="painel.html"><img src="icones/LogoComTexto.png" alt="InstinctBank" class="bank-logo" style="filter: none; height: 40px; width: auto; cursor: pointer;"></a>
+      <a href="painel.html" style="text-decoration: none; color: white;">
+        <h2 style="font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif; font-size: x-large;">InstinctBank</h2>
+      </a>
+    </div>
+    <div class="nav-user">
+      <span id="userGreeting"></span>
+      <button onclick="sair()" class="btn-logout"><i class="fas fa-sign-out-alt"></i> Sair</button>
+    </div>
+  </nav>
+
+  <main class="dashboard-main">
+    <div class="dashboard-grid">
+      <section class="dashboard-card balance-card">
+        <div class="card-header">
+          <h3><i class="fas fa-wallet"></i> Saldo Disponível</h3>
+        </div>
+        <div class="card-body">
+          <div class="balance-amount">
+            <span class="currency">R$</span>
+            <span class="amount" id="saldo">0.00</span>
+          </div>
+          <a href="extrato.html">
+            <button class="btn-secondary">
+              <i class="fas fa-list"></i> Ver Extrato
+            </button>
+          </a>
+        </div>
+      </section>
+
+      <section class="dashboard-card quick-actions" style="overflow-y: auto;">
+        <div class="card-header">
+          <h3><i class="fas fa-bolt"></i> Ações Rápidas</h3>
+        </div>
+        <div class="card-body">
+          <div class="actions-grid">
+            <button onclick="location.href='transferencia.html'" class="action-button">
+              <i class="fas fa-exchange-alt"></i>
+              <span>Transferir</span>
+            </button>
+            <button onclick="location.href='pagamento.html'" class="action-button">
+              <i class="fas fa-barcode"></i>
+              <span>Pagar</span>
+            </button>
+            <button onclick="location.href='deposito.html'" class="action-button">
+              <i class="fas fa-money-bill-wave"></i>
+              <span>Depositar</span>
+            </button>
+            <button onclick="location.href='cartoes.html'" class="action-button">
+              <i class="fas fa-credit-card"></i>
+              <span>Cartões</span>
+            </button>
+            <button onclick="location.href='emprestimo.html'" class="action-button">
+              <i class="fas fa-hand-holding-usd"></i>
+              <span>Empréstimo</span>
+            </button>
+             <button onclick="location.href='GerarBoletos.html'" class="action-button">
+              <i class="fas fa-barcode"></i>
+              <span>Gerar Boletos</span>
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <section class="dashboard-card profile-card">
+        <div class="card-header">
+          <h3><i class="fas fa-user-circle"></i> Meu Perfil</h3>
+        </div>
+        <div class="card-body">
+          <div class="profile-info">
+            <div class="profile-avatar">
+              <i class="fas fa-user"></i>
+            </div>
+            <div class="profile-details">
+              <h4 id="userName"></h4>
+              <button onclick="location.href='perfil.html'" class="btn-primary">
+                <i class="fas fa-cog"></i> Gerenciar Perfil
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="dashboard-card transactions-card" style="overflow-y: auto;">
+        <div class="card-header">
+          <h3><i class="fas fa-history"></i> Últimas Transações</h3>
+        </div>
+        <div class="card-body">
+          <div id="ultimasTransacoes" class="transactions-list">
+
+          </div>
+          <button onclick="location.href='extrato.html'" class="btn-text">
+            Ver todas as transações <i class="fas fa-chevron-right"></i>
+          </button>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  
+
   <script>
     const usuarioAtual = window.db.getUsuarioAtual();
     if (!usuarioAtual) location.href = 'index.html';
@@ -419,7 +429,6 @@
     const usuarios = window.db.getUsuarios();
     const usuario = usuarios[usuarioAtual];
     
-    // Define saudação baseada na hora do dia
     function getSaudacao() {
       const hora = new Date().getHours();
       if (hora >= 5 && hora < 12) return "Bom dia";
@@ -427,7 +436,6 @@
       return "Boa noite";
     }
 
-    // Formata valor para moeda
     function formatarMoeda(valor) {
       return valor.toLocaleString('pt-BR', {
         minimumFractionDigits: 2,
@@ -435,7 +443,6 @@
       });
     }
 
-    // Formata data
     function formatarData(data) {
       return new Date(data).toLocaleDateString('pt-BR', {
         day: '2-digit',
@@ -444,15 +451,13 @@
       });
     }
 
-    // Atualiza informações do usuário
     document.getElementById('userName').textContent = usuario.perfil?.nome || usuarioAtual;
     document.getElementById('userGreeting').textContent = `${getSaudacao()}, ${usuario.perfil?.nome?.split(' ')[0] || usuarioAtual}`;
     document.getElementById('saldo').textContent = formatarMoeda(usuario.saldo || 0);
 
-    // Renderiza últimas transações
     function renderizarUltimasTransacoes() {
       const transacoesContainer = document.getElementById('ultimasTransacoes');
-      const ultimasTransacoes = usuario.historico.slice(-3).reverse(); // Pega as 3 últimas transações
+      const ultimasTransacoes = usuario.historico.slice(-3).reverse(); 
 
       transacoesContainer.innerHTML = ultimasTransacoes.map(transacao => {
         const partes = transacao.split('—');

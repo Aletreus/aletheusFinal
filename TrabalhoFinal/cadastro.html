@@ -8,6 +8,18 @@
   <script src="data.js"></script>
   <link rel="shortcut icon" href="icones/LogoInstinct.png" type="image/x-icon">
   <style>
+    a{
+      text-decoration: none;
+    }
+    button{
+      cursor: pointer;
+      padding: 5px 10px;
+      border-radius: 6px;
+      border: none;
+      font-size: 1rem;
+      background-color: #2e7d32;
+      color: white;
+    }
     .logo-header {
       text-align: center;
       padding: 1rem;
@@ -15,7 +27,47 @@
     .logo-header img {
       max-height: 60px;
     }
+
+    .step { 
+
+      display: none; 
+
+    }
+    .step.active { 
+      display: block;
+     }
+    .progress-bar {
+      display: flex;
+      justify-content: space-between;
+      margin: 2rem 0;
+      position: relative;
+    }
+    .progress-bar::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: #ccc;
+      transform: translateY(-50%);
+      z-index: 0;
+    }
+    .progress-step {
+      width: 20px;
+      height: 20px;
+      background: #fff;
+      border: 2px solid #ccc;
+      border-radius: 50%;
+      z-index: 1;
+      position: relative;
+    }
+    .progress-step.active {
+      background: #007bff;
+      border-color: #007bff;
+    }
   </style>
+
 </head>
 <body>
   <header class="logo-header" style="text-align: center;
@@ -36,7 +88,7 @@
         <input id="telefone" placeholder="Telefone" />
         <input id="email" placeholder="Email" />
         <button onclick="nextStep(1)">Próximo</button>
-        <p style="margin-top:.5rem"><button onclick="location.href='index.html'">Voltar</button></p>
+        <a href="index.html"><button>Voltar</button></a>
       </div>
 
       <div id="step2" class="step">
@@ -78,46 +130,11 @@
     </section>
   </main>
 
-  <style>
-    .step { display: none; }
-    .step.active { display: block; }
-    .progress-bar {
-      display: flex;
-      justify-content: space-between;
-      margin: 2rem 0;
-      position: relative;
-    }
-    .progress-bar::before {
-      content: '';
-      position: absolute;
-      top: 50%;
-      left: 0;
-      right: 0;
-      height: 2px;
-      background: #ccc;
-      transform: translateY(-50%);
-      z-index: 0;
-    }
-    .progress-step {
-      width: 20px;
-      height: 20px;
-      background: #fff;
-      border: 2px solid #ccc;
-      border-radius: 50%;
-      z-index: 1;
-      position: relative;
-    }
-    .progress-step.active {
-      background: #007bff;
-      border-color: #007bff;
-    }
-  </style>
-
+  
   <script>
     let currentStep = 1;
     const formData = {};
 
-    // === Função de validação de CPF ===
     function validarCPF(cpf) {
       cpf = cpf.replace(/[^\d]+/g, '');
       if (cpf.length !== 11 || /^(\d)\1+$/.test(cpf)) return false;
@@ -244,7 +261,6 @@
       `;
     }
 
-    // === Máscaras ===
     document.getElementById('cpf').addEventListener('input', function(e) {
       let value = e.target.value.replace(/\D/g, '');
       if (value.length <= 11)
@@ -266,7 +282,7 @@
       e.target.value = value;
     });
 
-    // === Concluir Cadastro ===
+   
     document.getElementById('btnConcluir').addEventListener('click', function(){
       const msg = document.getElementById('msg');
       const usuarios = window.db.getUsuarios();

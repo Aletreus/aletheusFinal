@@ -6,6 +6,18 @@
   <title>InstinctBank — Pagamentos</title>
   <link rel="shortcut icon" href="icones/LogoInstinct.png" type="image/x-icon">
   <style>
+    a{
+      text-decoration: none;
+    }
+    button{
+      cursor: pointer;
+      padding: 5px 10px;
+      border-radius: 6px;
+      border: none;
+      font-size: 1rem;
+      background-color: #2e7d32;
+      color: white;
+    }
     body {
       font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
       background-color: #F8FFF8;
@@ -78,8 +90,8 @@
         <tbody></tbody>
       </table>
 
-      <button onclick="location.href='GerarBoletos.html'">Gerar Boletos</button>
-      <button onclick="location.href='painel.html'">Voltar ao Painel</button>
+      <a href="GerarBoletos.html"><button>Gerar Boletos</button></a>
+      <a href="painel.html"><button>Voltar ao Painel</button></a>
     </section>
   </main>
 
@@ -92,7 +104,7 @@
     const tabela = document.querySelector('#listaBoletos tbody');
     const msg = document.getElementById('msg');
     const saldoSpan = document.getElementById('saldoAtual');
-    const JUROS_MENSAL = 0.03; // 3% ao mês de atraso
+    const JUROS_MENSAL = 0.03;
 
     function carregarBoletos() {
       return JSON.parse(localStorage.getItem('boletos') || '[]');
@@ -113,7 +125,6 @@
       saldoSpan.textContent = saldo.toLocaleString('pt-BR', { minimumFractionDigits: 2 });
     }
 
-    // 🧮 Função para calcular meses de atraso entre duas datas
     function mesesDeAtraso(vencimento) {
       const hoje = new Date();
       const v = new Date(vencimento.split('/').reverse().join('-'));
@@ -148,7 +159,7 @@
     }
 
     function exibirBoletos() {
-      aplicarJurosBoletos(); // Aplica juros sempre que carregar
+      aplicarJurosBoletos(); 
       const boletos = carregarBoletos();
       tabela.innerHTML = '';
       boletos.forEach(b => {
@@ -207,12 +218,10 @@
         return;
       }
 
-      // Debitar valor e marcar como pago
       usuarios[usuarioAtual].saldo -= boleto.valor;
       boleto.pago = true;
       boleto.dataPagamento = new Date().toLocaleDateString('pt-BR');
 
-      // Salvar tudo
       salvarBoletos(boletos);
       db.saveUsuarios(usuarios);
 

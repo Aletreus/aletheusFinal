@@ -9,79 +9,20 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
   <link rel="shortcut icon" href="icones/LogoInstinct.png" type="image/x-icon">
 </head>
-<body class="dashboard-body">
-  
-  <header class="logo-header" style="text-align: center;
-      padding: 10px;">
-    <a href="painel.html"><img src="icones/LogoComTexto.png" alt="InstinctBank Logo" style="height: 40px;"></a>
-    <a href="painel.html" style="text-decoration: none; color: white;">
-      <h2 style="font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif; font-size: x-large; position: absolute;left: 65px; top: 20px;">InstinctBank</h2>
-    </a>
-    <button onclick="logout()" style="cursor: pointer; padding: 5px; width: 60px; border-radius: 10px; border: 0; font-size: 18px; font-weight: 700; color: white; background-color: #2e7d32;">
-        Sair
-      </button>
-  </header>
-
-  <main class="dashboard-main">
-    <div class="dashboard-grid single-column">
-      <!-- Cartão de Saldo -->
-      <section class="dashboard-card balance-card">
-        <div class="card-header">
-          <h3><i class="fas fa-wallet"></i> Saldo Disponível</h3>
-        </div>
-        <div class="card-body">
-          <div class="balance-amount">
-            <span class="currency">R$</span>
-            <span class="amount" id="saldo">0.00</span>
-          </div>
-        </div>
-      </section>
-
-      <!-- Filtros -->
-      <section class="dashboard-card">
-        <div class="card-header">
-          <h3><i class="fas fa-filter"></i> Filtros</h3>
-        </div>
-        <div class="card-body">
-          <div class="filters-grid">
-            <div class="filter-group">
-              <label>Período</label>
-              <select id="periodoFiltro" class="select-custom">
-                <option value="7">Últimos 7 dias</option>
-                <option value="15">Últimos 15 dias</option>
-                <option value="30" selected>Últimos 30 dias</option>
-                <option value="90">Últimos 90 dias</option>
-                <option value="0">Todo o período</option>
-              </select>
-            </div>
-            <div class="filter-group">
-              <label>Tipo</label>
-              <select id="tipoFiltro" class="select-custom">
-                <option value="todos" selected>Todas operações</option>
-                <option value="deposito">Depósitos</option>
-                <option value="transferencia">Transferências</option>
-                <option value="pagamento">Pagamentos</option>
-              </select>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- Extrato -->
-      <section class="dashboard-card">
-        <div class="card-header">
-          <h3><i class="fas fa-list"></i> Extrato Detalhado</h3>
-        </div>
-        <div class="card-body">
-          <div id="extrato" class="transactions-list">
-            <!-- Preenchido via JavaScript -->
-          </div>
-        </div>
-      </section>
-    </div>
-  </main>
-
   <style>
+    a{
+      text-decoration: none;
+    }
+    button{
+      cursor: pointer;
+      padding: 5px 10px;
+      border-radius: 6px;
+      border: none;
+      font-size: 1rem;
+      background-color: #2e7d32;
+      color: white;
+    }
+
     .dashboard-body {
       margin: 0;
       padding: 0;
@@ -315,6 +256,77 @@
     }
   </style>
 
+<body class="dashboard-body">
+  
+  <header class="logo-header" style="text-align: center;
+      padding: 10px;">
+    <a href="painel.html"><img src="icones/LogoComTexto.png" alt="InstinctBank Logo" style="height: 40px;"></a>
+    <a href="painel.html" style="text-decoration: none; color: white;">
+      <h2 style="font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif; font-size: x-large; position: absolute;left: 65px; top: 20px;">InstinctBank</h2>
+    </a>
+    <button onclick="logout()" style="cursor: pointer; padding: 5px; width: 60px; border-radius: 10px; border: 0; font-size: 18px; font-weight: 700; color: white; background-color: #2e7d32;">
+        Sair
+      </button>
+  </header>
+
+  <main class="dashboard-main">
+    <div class="dashboard-grid single-column">
+      <section class="dashboard-card balance-card">
+        <div class="card-header">
+          <h3><i class="fas fa-wallet"></i> Saldo Disponível</h3>
+        </div>
+        <div class="card-body">
+          <div class="balance-amount">
+            <span class="currency">R$</span>
+            <span class="amount" id="saldo">0.00</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="dashboard-card">
+        <div class="card-header">
+          <h3><i class="fas fa-filter"></i> Filtros</h3>
+        </div>
+        <div class="card-body">
+          <div class="filters-grid">
+            <div class="filter-group">
+              <label>Período</label>
+              <select id="periodoFiltro" class="select-custom">
+                <option value="7">Últimos 7 dias</option>
+                <option value="15">Últimos 15 dias</option>
+                <option value="30" selected>Últimos 30 dias</option>
+                <option value="90">Últimos 90 dias</option>
+                <option value="0">Todo o período</option>
+              </select>
+            </div>
+            <div class="filter-group">
+              <label>Tipo</label>
+              <select id="tipoFiltro" class="select-custom">
+                <option value="todos" selected>Todas operações</option>
+                <option value="deposito">Depósitos</option>
+                <option value="transferencia">Transferências</option>
+                <option value="pagamento">Pagamentos</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="dashboard-card">
+        <div class="card-header">
+          <h3><i class="fas fa-list"></i> Extrato Detalhado</h3>
+        </div>
+        <div class="card-body">
+          <div id="extrato" class="transactions-list">
+           
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  
+
   <script>
     const usuarioAtual = window.db.getUsuarioAtual();
     if (!usuarioAtual) location.href = 'index.html';
@@ -345,14 +357,12 @@
     }
     document.getElementById('saldo').textContent = formatarMoeda(usuario.saldo || 0);
 
-    // === FILTRO DE TRANSAÇÕES ===
     function filtrarTransacoes() {
       const dias = parseInt(document.getElementById('periodoFiltro').value);
       const tipo = document.getElementById('tipoFiltro').value;
       
       let transacoes = usuario.historico.slice();
 
-      // Filtro por período
       if (dias > 0) {
         const dataLimite = new Date();
         dataLimite.setDate(dataLimite.getDate() - dias);
@@ -364,7 +374,6 @@
         });
       }
 
-      // Filtro por tipo (corrigido com acentos)
       if (tipo !== 'todos') {
         const normalizar = str => str.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
         transacoes = transacoes.filter(transacao => {
@@ -376,7 +385,6 @@
       renderizarTransacoes(transacoes);
     }
 
-    // === RENDERIZAÇÃO DO EXTRATO CORRIGIDA ===
     function renderizarTransacoes(transacoes) {
       const extratoContainer = document.getElementById('extrato');
       

@@ -9,6 +9,18 @@
   <link rel="shortcut icon" href="icones/LogoInstinct.png" type="image/x-icon">
 
   <style>
+    a{
+      text-decoration: none;
+    }
+    button{
+      cursor: pointer;
+      padding: 5px 10px;
+      border-radius: 6px;
+      border: none;
+      font-size: 1rem;
+      background-color: #2e7d32;
+      color: white;
+    }
     .logo-header img {
       max-height: 60px;
     }
@@ -39,12 +51,10 @@
       transition: filter 0.3s ease;
     }
 
-    /* === Hover (escurece o cartão e mostra a lixeira) === */
     .credit-card:hover .credit-card-inner {
       filter: brightness(0.5);
     }
 
-    /* === Ícone de exclusão (lixeira) === */
     .delete-icon {
       position: absolute;
       top: 50%;
@@ -77,7 +87,6 @@
       opacity: 0;
     }
 
-    /* Efeito de círculo branco translúcido ao passar o mouse */
     .delete-icon::before {
       content: "";
       position: absolute;
@@ -94,7 +103,6 @@
       transform: scale(1.1);
     }
 
-    /* Troca entre lixeira fechada e aberta */
     .delete-icon:hover img.trash-closed {
       opacity: 0;
     }
@@ -211,7 +219,7 @@
       <div id="cartoesList"></div>
       <button id="gerar">Gerar Cartão Virtual</button>
       <p id="msg" style="color:green;margin-top:.5rem"></p>
-      <p style="margin-top:.5rem"><button onclick="location.href='painel.html'">Voltar</button></p>
+      <a href="painel.html"><button>Voltar</button></a>
     </section>
   </main>
 
@@ -241,7 +249,7 @@
         const cardInner = document.createElement('div');
         cardInner.className = 'credit-card-inner';
 
-        // === ÍCONE DE EXCLUSÃO COM DUAS IMAGENS ===
+        
         const deleteIcon = document.createElement('div');
         deleteIcon.className = 'delete-icon';
         deleteIcon.innerHTML = `
